@@ -28,7 +28,9 @@ const SubMenu = ({rotate,toggleRotate,title,childrens}) => {
                let count = key + 1
                nog =  count/10 
               return (
-                <Link>
+                <Link
+                 to={child.path}
+                >
                             <p 
                   style={{  transitionDelay:`${key+1 && nog+"s"}`}}  
                   className={` transition-all duration-700  ${rotate?"ml-[0] p-[0.3em] my-4 opacity-100 h-[37.78px]":" h-0 p-0 my-0 opacity-0 ml-[60px] "}`}  key={key}>

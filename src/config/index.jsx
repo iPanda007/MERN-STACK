@@ -4,14 +4,14 @@
         "icon": "bi-gear-fill",
         "childrens": [
             {
-                "title": "Home",
+                "title": "Create_Form",
                 "icon": "bi-house-fill",
-                "path": "/"
+                "path": "/create"
             },
             {
-                "title": "About",
+                "title": "Product List",
                 "icon": "bi-info-circle-fill",
-                "path": "/about"
+                "path": "/product"
             },
             {
                 "title": "Contact",
