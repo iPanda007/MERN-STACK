@@ -63,8 +63,23 @@ function getData(dbName,collName,id,res){
        let dbo = db.db(dbName)
        dbo.collection(collName).find({_id:mongodb.ObjectId(id)}).toArray(function(err,result){
             res.send(result)
+            console.log(result)
        })
 
    })
 }
-module.exports = {createDB,insertProduct,getAllData,getData}
+
+function updataData(dbName,collName,id,updata){
+    mongodbClient.connect(url,function(err,db){
+        if(err) throw err
+         let dbo = db.db(dbName);
+         let query = {_id:mongodb.ObjectId(id)}
+         let updateApi = {$set:updata}
+         dbo.collection(collName).updateOne(query,updata,function(err,result){
+            console.log(result)
+
+         })
+    })
+
+}
+module.exports = {createDB,insertProduct,getAllData,getData,updataData}

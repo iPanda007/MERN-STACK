@@ -28,18 +28,26 @@ const CreateForm = () => {
  }
   return (
 <div className='p-10'>
-
+  <h1 className='text-center text-3xl'>Product Create</h1>
  {message}
    <form onSubmit={handleSubmit} >
+      <div className='p-2 border'>
       <input type="text" ref={titleRef}   placeholder='title' />
+
+      </div>
+      <div className='p-2 border'>
       <input type="text" ref={defRef} placeholder='description'/>
+      </div>
+      <div className='p-2 border'>
       <input type="text" ref={priceRef} placeholder="price" />
+
+      </div>
       <input type="file" 
         onChange={(e)=>{
            setFile({file:e.target.files[0]})
         }}
       />
-      <button type='submit' 
+      <button className='p-2 bg-slate' type='submit' 
       
       > submit</button>
   </form>

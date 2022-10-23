@@ -1,22 +1,23 @@
 import React,{useState,useEffect} from 'react'
-import {Link} from 'react-router-dom'
+import {Link,useParams} from 'react-router-dom'
 import axios from 'axios'
 const ProdictsList = () => {
 
+    const params = useParams();
     const [data,setData]= useState([]);
 
     async function fetchData(){
       const res = await axios.get('http://localhost:8000/products')
-      console.log(res)
+     
       setData(res.data)
     }
     useEffect(()=>{
       fetchData();
-
+        
     },[])
   return (
     <div>
-                                <div className="overflow-x-auto relative">
+    <div className="overflow-x-auto relative">
     <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
@@ -54,7 +55,7 @@ const ProdictsList = () => {
                         {item.price}
                     </td>
                     <td className="py-4 px-6">
-                       <Link to={'/edit'+item._id}>
+                       <Link to={'/product/edit/'+item._id}>
                        <button className='p-3 mr-2 bg-slate-500 '>Edit</button>
                        </Link>
                        <button className='p-3 bg-slate-500'>Delete</button>
