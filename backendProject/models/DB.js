@@ -69,17 +69,24 @@ function getData(dbName,collName,id,res){
    })
 }
 
-function updataData(dbName,collName,id,updata){
+function updateData(dbName,collName,id,updata){
     mongodbClient.connect(url,function(err,db){
         if(err) throw err
          let dbo = db.db(dbName);
          let query = {_id:mongodb.ObjectId(id)}
          let updateApi = {$set:updata}
-         dbo.collection(collName).updateOne(query,updata,function(err,result){
+         dbo.collection(collName).updateOne(query,updateApi,function(err,result){
             console.log(result)
 
          })
     })
 
 }
-module.exports = {createDB,insertProduct,getAllData,getData,updataData}
+function deleteData(dbName,collName,id){
+   mongodbClient.connect(url,function(err,db){
+      if(err)throw err;
+      
+   })
+
+}
+module.exports = {createDB,insertProduct,getAllData,getData,updateData}

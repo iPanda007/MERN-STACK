@@ -1,8 +1,7 @@
 import React,{useState,useEffect,useRef} from 'react'
-
+import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import {useParams} from "react-router-dom"
-
 
 const ProductEdit = () => {
   const initialState = {
@@ -11,12 +10,18 @@ const ProductEdit = () => {
       price:"",
   }
  const params = useParams();
+ //state
  const [formValue,setFormValue] =useState(initialState);
  const [file,setFile] = useState(null)
  //ref
  const titleRef = useRef(null);
  const desRef  = useRef(null);
  const priceRef = useRef(null)
+
+//navigate
+
+const navigate = useNavigate();
+
 function fetchData(){
 
   axios.get('http://localhost:8000/products/'+params.id).then(function(res){
@@ -35,10 +40,22 @@ useEffect(()=>{
    console.log("params",params)
 },[])
 
-const sendData = (e)=>{
+const sendData =async (e)=>{
       e.preventDefault();
-      console.log(titleRef.current.value)
-      console.log(file)
+     const pathData = {
+        title: titleRef.current.value,
+        des:desRef.current.value,
+        price:priceRef.current.value
+     }
+     const formData = new FormData();
+     formData.append("data",JSON.stringify(pathData))
+     formData.append("image",file)
+     const res = axios({
+      url:'http://localhost:8000/products/'+params.id,
+      method:"post",
+      data:formData
+     })
+     console.log(res)
 }
 
   return (
@@ -60,7 +77,9 @@ const sendData = (e)=>{
        onChange={(e)=>setFile(e.target.files[0])
     }
      />
-     <button className='p-2 bg-slate-400' type='submit' 
+     <button
+      
+     className='p-2 bg-slate-400' type='submit' 
      
      > submit</button>
  </form>
