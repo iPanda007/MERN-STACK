@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import {useParams} from "react-router-dom"
 
-const ProductEdit = () => {
+const EditService = () => {
   const initialState = {
       title:"",
       des:"",
@@ -24,12 +24,10 @@ const navigate = useNavigate();
 
 function fetchData(){
 
-  axios.get('http://localhost:8000/products/'+params.id).then(function(res){
-
+  axios.get('http://localhost:8000/services/'+params.id).then(function(res){
        setFormValue({
          title: res.data[0].title,
-         des:res.data[0].des,
-         price:res.data[0].price,
+         des:res.data[0].description,
        })
 
   })
@@ -45,43 +43,37 @@ const sendData =async (e)=>{
      const pathData = {
         title: titleRef.current.value,
         des:desRef.current.value,
-        price:priceRef.current.value
      }
      const formData = new FormData();
      formData.append("data",JSON.stringify(pathData))
      formData.append("image",file)
      const res = axios({
-      url:'http://localhost:8000/products/'+params.id,
+      url:'http://localhost:8000/services/'+params.id,
       method:"post",
-      data:formData
+      data:formData,
+      headers:"application/json; charset=utf-8"
      })
-     console.log(res)
+     navigate('/servicelist')
 }
 
   return (
     <div >
-     <h1 className='text-4xl text-center'>Edit Product</h1>
+     <h1 className='text-4xl text-center'>Edit Service</h1>
 <div className='p-10'>
 
-  <form  >
+  <form onSubmit={sendData} >
       <div className='p-2 border'>
       <input type="text" ref={titleRef} defaultValue={formValue.title}  placeholder='title' />
       </div>
     <div className='p-2 border'>
     <input type="text" ref={desRef} defaultValue={formValue.des}  placeholder='description'/>
     </div>
-    <div className='p-2 border'>
-    <input type="text" ref={priceRef} defaultValue={formValue.price}  placeholder="price" />
-    </div>
+
      <input type="file"
        onChange={(e)=>setFile(e.target.files[0])
     }
      />
      <button
-      onClick={(e)=>{
-        navigate('/product')
-        sendData(e)
-      }}
      className='p-2 bg-slate-400' type='submit' 
      
      > submit</button>
@@ -91,4 +83,4 @@ const sendData =async (e)=>{
   )
 }
 
-export default ProductEdit
+export default EditService

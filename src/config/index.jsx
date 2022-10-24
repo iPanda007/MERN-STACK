@@ -1,6 +1,6 @@
  export const items=[
     {
-        "title": "General",
+        "title": "Products",
         "icon": "bi-gear-fill",
         "childrens": [
             {
@@ -38,16 +38,16 @@
         ]
     },
     {
-        "title": "Account",
+        "title": "Services",
         "icon": "bi-info-circle-fill",
         "childrens": [
             {
-                "title": "Login",
-                "path": "/login"
+                "title": "Add Service",
+                "path": "/addservice"
             },
             {
-                "title": "Register",
-                "path": "/register"
+                "title": "Service List",
+                "path": "servicelist"
             },
             {
                 "title": "Forgot Password",

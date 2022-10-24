@@ -1,15 +1,15 @@
 import React,{useState,useEffect} from 'react'
 import {Link} from 'react-router-dom'
 import axios from 'axios'
-import DeleteConfirm from './DeleteConfirm';
-const ProdictsList = () => {
+
+const ServiceList = () => {
 
     
     const [data,setData]= useState([]);
     const [show,setShow] = useState(false);
     const [para,setPara] = useState("")
     async function fetchData(){
-      const res = await axios.get('http://localhost:8000/products')
+      const res = await axios.get('http://localhost:8000/services')
      
       setData(res.data)
     }
@@ -20,6 +20,13 @@ const ProdictsList = () => {
 
     function close(){
         setShow(false)
+    }
+   async function deleteService(id){
+      const res =  await axios({
+                    method:"post",
+                    url:"http://localhost:8000/services/"+id+"/delete"
+      })
+      console.log(res)
     }
 
   return (
@@ -37,9 +44,7 @@ const ProdictsList = () => {
                 <th scope="col" className="py-3 px-6">
                     Description
                 </th>
-                <th scope="col" className="py-3 px-6">
-                   Price
-                </th>
+        
                 <th scope="col" className="py-3 px-6">
                    
                 </th>
@@ -56,20 +61,19 @@ const ProdictsList = () => {
                       {item.title}
                     </td>
                     <td className="py-4 px-6">
-                        {item.des}
+                        {item.description}
                     </td>
+                 
                     <td className="py-4 px-6">
-                        {item.price}
-                    </td>
-                    <td className="py-4 px-6">
-                       <Link to={'/product/edit/'+item._id}>
+                       <Link to={'/service/edit/'+item._id}>
                        <button className='p-3 mr-2 bg-slate-500 '>Edit</button>
                        </Link>
                        <button className='p-3 bg-slate-500'
                          onClick={
                             ()=>{
                                 setShow(true)
-                                setPara(item._id)
+                                deleteService(item._id)
+                                window.location.reload()
                             }
                          }
                        >Delete</button>
@@ -83,14 +87,10 @@ const ProdictsList = () => {
     </table>
  
 </div>  
-<DeleteConfirm 
-   show={show}
-   para={para}
-   close={close}
-/>
+
     </div>
   )
 }
 
-export default ProdictsList
+export default ServiceList
 

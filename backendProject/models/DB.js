@@ -1,5 +1,6 @@
 
-const mongodb =require("mongodb")
+const mongodb =require("mongodb");
+const { flushSync } = require("react-dom");
 const mongodbClient =  mongodb.MongoClient;
 const url  = 'mongodb://localhost:27017'
 function createDB(dbName,collection){
@@ -24,6 +25,7 @@ function createDB(dbName,collection){
 
     }
 }
+// Insert Product
 function insertProduct(title,des,price,image,dbName,collName){
       try{
             mongodbClient.connect(url,function(err,db){
@@ -44,6 +46,41 @@ function insertProduct(title,des,price,image,dbName,collName){
 
       }
 }
+
+// Insert Service
+
+function insertService(title,description,image,dbName,collName){
+    try{
+        mongodbClient.connect(url,function(err,db){
+            if(err)throw err;
+            let dbo = db.db(dbName);
+            const insertData = {
+                title:title,
+                description:description,
+                image:image
+            }
+            dbo.collection(collName).insertOne(insertData,function(err,result){
+                    if(err) throw err;
+                    console.log(result)
+            })
+        })
+    }catch (e){
+
+    }
+}
+// service find all
+function allServiceData(dbName,collName,res){
+    mongodbClient.connect(url,function(err,db){
+         if(err) throw err;
+          let dbo = db.db(dbName);
+          dbo.collection(collName).find({}).toArray(function(err,result){
+                    if(err) throw err;
+                    res.send(result)
+          })
+    })
+}
+
+// produnct find all
 function getAllData(name,collName,res){
     try{
         mongodbClient.connect(url,function(err,db){
@@ -57,6 +94,7 @@ function getAllData(name,collName,res){
 
     }
 }
+// res produnct find id params
 function getData(dbName,collName,id,res){
    mongodbClient.connect(url,function(err,db){
     if(err)throw err;
@@ -65,10 +103,20 @@ function getData(dbName,collName,id,res){
             res.send(result)
             console.log(result)
        })
-
    })
 }
-
+// res param find id service
+function getDataService(dbName,collName,id,res){
+   mongodbClient.connect(url,function(err,db){
+         let dbo = db.db(dbName)
+         dbo.collection(collName).find({_id:mongodb.ObjectId(id)}).toArray(function(err,result){
+                    if(err) throw err;
+                    res.send(result)
+         })
+        
+   })
+}
+// update product
 function updateData(dbName,collName,id,updata){
     mongodbClient.connect(url,function(err,db){
         if(err) throw err
@@ -77,16 +125,47 @@ function updateData(dbName,collName,id,updata){
          let updateApi = {$set:updata}
          dbo.collection(collName).updateOne(query,updateApi,function(err,result){
             console.log(result)
-
          })
     })
-
 }
+// update service
+function updateService(dbName,collName,id,update){ 
+   mongodbClient.connect(url,function(err,db){
+        if(err) throw err
+        let dbo = db.db(dbName)
+        let query = {_id:mongodb.ObjectId(id)}
+        let updateData = {$set:update}
+        dbo.collection(collName).updateOne(query,updateData,function(err,result){
+                    if(err) throw err
+                    console.log(result)
+        })
+
+   })
+}
+// delete product
 function deleteData(dbName,collName,id){
    mongodbClient.connect(url,function(err,db){
       if(err)throw err;
-      
+       let dbo = db.db(dbName)
+       let query = {_id:mongodb.ObjectId(id)}
+       dbo.collection(collName).deleteOne(query,function(err,result){
+                if(err) throw err;
+                console.log(result)
+       })
    })
 
 }
-module.exports = {createDB,insertProduct,getAllData,getData,updateData}
+// delete service data
+function deleteServiceData(dbName,collName,id){
+    mongodbClient.connect(url,function(err,db){
+        if(err) throw err;
+        let dbo = db.db(dbName)
+        let query = {_id:mongodb.ObjectId(id)}
+        dbo.collection(collName).deleteOne(query,function(err,result){
+              if(err)throw err;
+              console.log(result)
+        })
+    })
+
+}
+module.exports = {createDB,insertProduct,getAllData,getData,updateData,deleteData,insertService,allServiceData,getDataService,updateService,deleteServiceData}

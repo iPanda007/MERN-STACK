@@ -1,6 +1,6 @@
 import React,{useState,useEffect} from 'react'
 import axios from 'axios'
-const CreateForm = () => {
+const AddServices = () => {
   const titleRef = React.createRef()
   const defRef = React.createRef()
   const priceRef = React.createRef()
@@ -11,7 +11,7 @@ const CreateForm = () => {
     let dataValue ={
      title:titleRef.current.value,
      des:defRef.current.value,
-     price:priceRef.current.value,
+  
     }
     let formData = new FormData();
  
@@ -19,15 +19,17 @@ const CreateForm = () => {
     formData.append("image",file.file)
    
   const res = await  axios({
-     url:"http://127.0.0.1:8000/product",
+     url:"http://127.0.0.1:8000/service",
      method:"post",
-     data:formData
+     data:formData,
+     headers:"application/json; charset=utf-8"
    })
   setMessage(res.data.message)
+  console.log(res)
  }
   return (
 <div className='p-10'>
-  <h1 className='text-center text-3xl'>Product Create</h1>
+  <h1 className='text-center text-3xl'>Service Create</h1>
  {message}
    <form onSubmit={handleSubmit} >
       <div className='p-2 border'>
@@ -37,10 +39,7 @@ const CreateForm = () => {
       <div className='p-2 border'>
       <input type="text" ref={defRef} placeholder='description'/>
       </div>
-      <div className='p-2 border'>
-      <input type="text" ref={priceRef} placeholder="price" />
-
-      </div>
+    
       <input type="file" 
         onChange={(e)=>{
            setFile({file:e.target.files[0]})
@@ -53,6 +52,9 @@ const CreateForm = () => {
 </div>
   )
 
+
+
+
 }
 
-export default CreateForm
+export default AddServices
