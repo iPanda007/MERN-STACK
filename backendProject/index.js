@@ -12,7 +12,7 @@ app.get('/',function(req,res){
             res.send("hello")
 })
 app.get('/createdb',function(req,res){
-     createDB("mern","service")
+     createDB("mern","user")
   res.end();
 })
 app.get('/products',function(req,res){
@@ -63,6 +63,20 @@ app.post('/service',fileUpload(),function(req,res){
     try {
         insertService(title,description,imageName,"mern","service")
         res.send({message:"service create successfully",status:true})
+    } catch (error) {
+        
+    }
+})
+
+//user
+app.post('/createUser',fileUpload(),function(req,res){
+    let body = JSON.parse(req.body.data)
+    let email = body.email
+    let password = body.password
+    
+
+    try {
+     
     } catch (error) {
         
     }
@@ -126,4 +140,17 @@ app.post('/services/:id/delete',function(req,res){
   deleteServiceData("mern","service",id)
   res.send({message:"product delete successfully",status:true})
 })
+
+
+
+
+
+//login 
+
+app.post("login", fileUpload(), function (req,res) {
+    let body = JSON.parse(req.body.data);
+    let email = body.username;
+    let password = body.password;
+})
+
 app.listen(8000,'127.0.0.1');
