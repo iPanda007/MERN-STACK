@@ -71,7 +71,7 @@ function insertService(title,description,image,dbName,collName){
 
 // Insert User
 
-function insertService(email,password,dbName,collName){
+function insertUser(email,password,dbName,collName){
     try{
         mongodbClient.connect(url,function(err,db){
             if(err)throw err;
@@ -82,13 +82,28 @@ function insertService(email,password,dbName,collName){
             }
             dbo.collection(collName).insertOne(insertData,function(err,result){
                     if(err) throw err;
-                    con
+                    
             })
         })
     }catch (e){
 
     }
 }
+
+//get all insert user
+
+function getAllInsertUser(dbName,collName,res) {
+    mongodbClient.connect(url, function (err,db) {
+        if (err) throw err;
+        let dbo = db.db(dbName)
+        dbo.collection(collName).find({}).toArray(function (err,result) {
+            if (err) throw err;
+            res.send(result)
+        })
+    })
+}
+
+
 // service find all
 function allServiceData(dbName,collName,res){
     mongodbClient.connect(url,function(err,db){
@@ -200,4 +215,4 @@ function userLogin(email, password, res, req) {
     })
 }
 
-module.exports = {createDB,insertProduct,getAllData,getData,updateData,deleteData,insertService,allServiceData,getDataService,updateService,deleteServiceData}
+module.exports = {createDB,insertProduct,getAllData,getData,updateData,deleteData,insertService,allServiceData,getDataService,updateService,deleteServiceData,insertUser,getAllInsertUser}

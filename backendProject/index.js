@@ -1,6 +1,6 @@
 const express = require('express')
 const fileUpload = require("express-fileupload");
-const {createDB,insertProduct, getAllData, getData,updateData,deleteData,insertService,allServiceData,getDataService,updateService,deleteServiceData} = require('./models/DB')
+const {insertUser,createDB,insertProduct, getAllData, getData,updateData,deleteData,insertService,allServiceData,getDataService,updateService,deleteServiceData,getAllInsertUser} = require('./models/DB')
 const app = express();
 app.use(express.urlencoded({extended:true}));
 app.use(express.json());
@@ -73,14 +73,24 @@ app.post('/createUser',fileUpload(),function(req,res){
     let body = JSON.parse(req.body.data)
     let email = body.email
     let password = body.password
-    
+   
 
+ 
     try {
-     
+        insertUser(email, password, "mern", "user")
+        res.send({message:"User Create SuccessFully",status:true})
     } catch (error) {
-        
+           res.send({message:"something Wrong ",status:false})
     }
+    console.log("sucess")
 })
+
+//getAll insert user
+
+
+app.get('/getUser', function (req, res) {
+  getAllInsertUser("mern","user",res)
+});
 
 //update
 app.post('/products/:id',fileUpload(),function(req,res){
